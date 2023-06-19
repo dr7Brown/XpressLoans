@@ -1,0 +1,552 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{53192B3B-0527-426B-BA07-159CE1777F3B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>XpressLoan</RootNamespace>
+    <AssemblyName>XpressLoan</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>C:\Users\Brownzip\Desktop\LoanApp v2.3.08\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <SuiteName>XpressLoans</SuiteName>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>11</ApplicationRevision>
+    <ApplicationVersion>2.3.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>F379312981DD9207E87C24AE8C5EE6753492EF44</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>XpressLoan_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>XpressLoan.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>setupICo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WinFormAnimation, Version=1.6.0.4, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>..\packages\WinFormAnimation.1.6.0.4\lib\net40\WinFormAnimation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\classActivator.cs" />
+    <Compile Include="Classes\ClassAuth.cs" />
+    <Compile Include="Classes\ClassCalculator.cs" />
+    <Compile Include="Classes\ClassHeader.cs" />
+    <Compile Include="Classes\LoanDetails.cs" />
+    <Compile Include="Classes\ClassPaths.cs" />
+    <Compile Include="Classes\ConnString.cs" />
+    <Compile Include="Classes\CurrentDate.cs" />
+    <Compile Include="Classes\Customers.cs" />
+    <Compile Include="Classes\RepaymentStatement.cs" />
+    <Compile Include="Classes\ScheduleDetails.cs" />
+    <Compile Include="Classes\TransactionData.cs" />
+    <Compile Include="Forms\ActivationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ActivationForm.Designer.cs">
+      <DependentUpon>ActivationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormAuth.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAuth.Designer.cs">
+      <DependentUpon>FormAuth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormReceipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormReceipt.Designer.cs">
+      <DependentUpon>FormReceipt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormAddCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAddCustomer.Designer.cs">
+      <DependentUpon>FormAddCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormAddRepayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAddRepayment.Designer.cs">
+      <DependentUpon>FormAddRepayment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormAlerts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAlerts.Designer.cs">
+      <DependentUpon>FormAlerts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormApplyLoan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormApplyLoan.Designer.cs">
+      <DependentUpon>FormApplyLoan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormCalculator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCalculator.Designer.cs">
+      <DependentUpon>FormCalculator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormCustomers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCustomers.Designer.cs">
+      <DependentUpon>FormCustomers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormHome.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormHome.Designer.cs">
+      <DependentUpon>FormHome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormLoans.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormLoans.Designer.cs">
+      <DependentUpon>FormLoans.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormMessage.Designer.cs">
+      <DependentUpon>FormMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormRepayments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormRepayments.Designer.cs">
+      <DependentUpon>FormRepayments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormReports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormReports.Designer.cs">
+      <DependentUpon>FormReports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSchedule.Designer.cs">
+      <DependentUpon>FormSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormsStatement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormsStatement.Designer.cs">
+      <DependentUpon>FormsStatement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSystemDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSystemDate.Designer.cs">
+      <DependentUpon>FormSystemDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ParentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ParentForm.Designer.cs">
+      <DependentUpon>ParentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormUserDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormUserDetails.Designer.cs">
+      <DependentUpon>FormUserDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PasswordAlertForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PasswordAlertForm.Designer.cs">
+      <DependentUpon>PasswordAlertForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SignupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SignupForm.Designer.cs">
+      <DependentUpon>SignupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ThemeColor.cs" />
+    <Compile Include="XpressLoanDBDataSet.cs">
+      <DependentUpon>XpressLoanDBDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XpressLoanDBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XpressLoanDBDataSet.xsd</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\ActivationForm.resx">
+      <DependentUpon>ActivationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormAuth.resx">
+      <DependentUpon>FormAuth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormReceipt.resx">
+      <DependentUpon>FormReceipt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormAddCustomer.resx">
+      <DependentUpon>FormAddCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormAddRepayment.resx">
+      <DependentUpon>FormAddRepayment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormAlerts.resx">
+      <DependentUpon>FormAlerts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormApplyLoan.resx">
+      <DependentUpon>FormApplyLoan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormCalculator.resx">
+      <DependentUpon>FormCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormCustomers.resx">
+      <DependentUpon>FormCustomers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormHome.resx">
+      <DependentUpon>FormHome.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormLoans.resx">
+      <DependentUpon>FormLoans.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormMessage.resx">
+      <DependentUpon>FormMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormRepayments.resx">
+      <DependentUpon>FormRepayments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormReports.resx">
+      <DependentUpon>FormReports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSchedule.resx">
+      <DependentUpon>FormSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormsStatement.resx">
+      <DependentUpon>FormsStatement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSystemDate.resx">
+      <DependentUpon>FormSystemDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ParentForm.resx">
+      <DependentUpon>ParentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormUserDetails.resx">
+      <DependentUpon>FormUserDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PasswordAlertForm.resx">
+      <DependentUpon>PasswordAlertForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SignupForm.resx">
+      <DependentUpon>SignupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="XpressLoanDBDataSet.xsc">
+      <DependentUpon>XpressLoanDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="XpressLoanDBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>XpressLoanDBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XpressLoanDBDataSet.xss">
+      <DependentUpon>XpressLoanDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="XpressLoan_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LoginBG 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xpress logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\textform1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\account2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loginbtn21.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\signupbtn.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_unisex.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_email.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_username.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_home1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SqlServer.SqlLocalDB.15.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2019 Express LocalDB</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_settings.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_settings1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_reports.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_reportings.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_reports1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_customers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_payment2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_payment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_cashout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_user_bs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_user_bss.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_max.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_close_r.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_logout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_alert_r.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_alert_r100.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_warning100.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_arrow_left2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_arrow_right2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_adduser30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_add50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_search50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_search30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_calculator30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_print100.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_print50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_refresh50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_refresh30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_print20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\passport.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Profiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Added files\LoanAppData\data\XpressDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Added files\LoanAppData\data\XpressDB_log.ldf">
+      <DependentUpon>XpressDB.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Added files\readme.txt" />
+    <Content Include="setupICo.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
