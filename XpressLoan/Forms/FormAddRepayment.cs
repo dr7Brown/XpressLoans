@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetroFramework.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,9 +40,10 @@ namespace XpressLoan.Forms
         SqlDataAdapter da = new SqlDataAdapter();
         String constr;
         SqlConnection conn;
+        DataSet ds = new DataSet();
 
-   
-             
+
+
         public FormAddRepayment(int repaymentID, int customerID, string name, int LoanID, double amount, string status)
         {
             InitializeComponent();
@@ -53,12 +55,12 @@ namespace XpressLoan.Forms
             mStatus = status;
             //PayOrEdit();
             fillLogoFields();
-
+            fillDG(mRepaymentID);
             repaymentIDTextBox.Text = mRepaymentID+"";
             nameTextBox1.Text = mName ;
             loanIDTextBox.Text = mLoanID+"";
-            mRepBalance = mDueAmount - getRepaymentsMadeForThisID();
-            getRepaymentsMadeForThisID();
+            mRepBalance = mDueAmount - getRepaymentsMadeForThis_RepID(mRepaymentID);
+            getRepaymentsMadeForThis_RepID(mRepaymentID);
             txtBalance.Text = string.Format("{0:0.00}", mRepBalance);
             //txtAmount.Text = mRepBalance+"";
 
@@ -94,8 +96,30 @@ namespace XpressLoan.Forms
                 MessageBox.Show("Error occured" + exception.Message);
             }
         }
-       
-        public double getRepaymentsMadeForThisID()
+        public void fillDG(int repID)
+        {
+            try
+            {
+                //Connection string is assigned to the instance of sql connection.
+                String constr = ConnString.ConnectionString;
+                SqlConnection conn = new SqlConnection(constr);
+
+
+                da.SelectCommand = new SqlCommand("SELECT Date, Amount, sum(Amount) over(ORDER BY Date ASC) AS Total FROM tblRepDeposits WHERE RepaymentID=@RepaymentID", conn);
+                da.SelectCommand.Parameters.AddWithValue("@RepaymentID", repID);
+                //clear dataset.
+                ds.Reset();
+                da.Fill(ds);
+                dgRepayments.DataSource = ds.Tables[0];
+
+               
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+           
+
+        }
+
+        public double getRepaymentsMadeForThis_RepID(int repID)
         {
             double paidAmount = 0;
             using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
@@ -105,7 +129,7 @@ namespace XpressLoan.Forms
 
                 string query = "SELECT * FROM tblRepDeposits WHERE RepaymentID=@RepaymentID";
                 da.SelectCommand = new SqlCommand(query, conn);
-                da.SelectCommand.Parameters.AddWithValue("@RepaymentID", mRepaymentID);
+                da.SelectCommand.Parameters.AddWithValue("@RepaymentID", repID);
 
                 SqlDataReader dr;
                 try
@@ -221,54 +245,96 @@ namespace XpressLoan.Forms
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            StoreRepayment();
-            this.Close();
+            if (txtAmount.Text.Length > 0)
+            {
+                StoreRepayment();
+                this.Close();
+            }
+            else
+            {
+                txtError.Visible = true;
+                //add error msg
+                txtError.Text = "Enter repayment amount";
+            }
+            
         }
        
         void submitRecord()
         {
             loanDetails = new LoanDetails(mLoanID);
             double paid = getTotalRepaymentsMadeForThisLoan() + mDeposit;
-            //double balance = getLoanAmount() + paid;
-            double balance = -(loanDetails.amount + loanDetails.interest) + paid;
-            //double repBalance = 
-            if (mRepBalance > mDeposit && mDeposit > 0)
-            {
-                mStatus = "PARTIAL";
-            }
-            else if (mRepBalance == mDeposit && mDeposit > 0)
-            {
-                mStatus = "PAID";
-            }
-
+            double balance = paid - (loanDetails.amount + loanDetails.interest);
+            double totalMultiDeposit4LastRepID = getRepaymentsMadeForThis_RepID(mRepaymentID);
             using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
-                {
+            {
                 if (conn.State != ConnectionState.Open)
                     conn.Open();
                 SqlTransaction transaction = conn.BeginTransaction();
                 try
-                {                   
-                    
-                    string query = "UPDATE tblRepayment SET Status=@Status, PaidDate=@PaidDate, Comments=@Comments, Paid=@Paid WHERE RepaymentID=@RepaymentID";
-                    da.UpdateCommand = new SqlCommand(query, conn, transaction);
-                    da.UpdateCommand.Parameters.AddWithValue("@RepaymentID", mRepaymentID);
-                    da.UpdateCommand.Parameters.AddWithValue("@Status", mStatus);
-                    da.UpdateCommand.Parameters.AddWithValue("@PaidDate", mPaidDate);
-                    da.UpdateCommand.Parameters.AddWithValue("@Comments", mComments);
-                    da.UpdateCommand.Parameters.AddWithValue("@Paid", getRepaymentsMadeForThisID() + mDeposit);
-                    da.UpdateCommand.ExecuteNonQuery();                   
+                {
+                    double depositBalance = mDeposit;
+                    //there may be initial payment
+                    //double dueDeposit = mRepBalance;
+                    int count = 0;
+                    //temp var for mRepBalance
+                    double tempRepBalance = mRepBalance;
+                    bool endLoop = false;
+                    while (!endLoop)
+                    {
+                        if (depositBalance > tempRepBalance)
+                        {
+                            mStatus = "PAID";
+                        }
+                        else if (depositBalance == tempRepBalance)
+                        {
+                            mStatus = "PAID";
+                            endLoop = true;
+                        }
+                        else if(tempRepBalance > depositBalance )
+                        {
+                            mStatus = "PARTIAL";
+                            tempRepBalance = depositBalance;
+                            endLoop = true;
+                        }
+                        int curentRepaymentID = mRepaymentID + count;
+                        double deposited = totalMultiDeposit4LastRepID + tempRepBalance;
 
-                    string query1 = "INSERT INTO tblRepDeposits VALUES(@PaidDate, @Amount, @RepaymentID)";
-                    da.InsertCommand = new SqlCommand(query1, conn, transaction);
-                    da.InsertCommand.Parameters.AddWithValue("@PaidDate", mPaidDate);
-                    da.InsertCommand.Parameters.AddWithValue("@Amount", mDeposit);
-                    da.InsertCommand.Parameters.AddWithValue("@RepaymentID", mRepaymentID);
-                    da.InsertCommand.ExecuteNonQuery();
+                       /* MessageBox.Show("current id: " + curentRepaymentID +
+                            "\n totalMultiDeposit4LastRepID: " + totalMultiDeposit4LastRepID +
+                            "\n dep balance: "  + depositBalance +
+                            "\n rep balance: " + tempRepBalance +
+                            "\n mStatus: " + mStatus);*/
+
+                        // make next repayment
+                        string query = "UPDATE tblRepayment SET Status=@Status, PaidDate=@PaidDate, Comments=@Comments, Paid=@Paid WHERE RepaymentID=@RepaymentID";
+                        da.UpdateCommand = new SqlCommand(query, conn, transaction);
+                        da.UpdateCommand.Parameters.AddWithValue("@RepaymentID", curentRepaymentID);
+                        da.UpdateCommand.Parameters.AddWithValue("@Status", mStatus);
+                        da.UpdateCommand.Parameters.AddWithValue("@PaidDate", mPaidDate);
+                        da.UpdateCommand.Parameters.AddWithValue("@Comments", mComments);
+                        da.UpdateCommand.Parameters.AddWithValue("@Paid", deposited);
+                        da.UpdateCommand.ExecuteNonQuery();
+
+                        string query1 = "INSERT INTO tblRepDeposits VALUES(@PaidDate, @Amount, @RepaymentID)";
+                        da.InsertCommand = new SqlCommand(query1, conn, transaction);
+                        da.InsertCommand.Parameters.AddWithValue("@PaidDate", mPaidDate);
+                        da.InsertCommand.Parameters.AddWithValue("@Amount", tempRepBalance);
+                        da.InsertCommand.Parameters.AddWithValue("@RepaymentID", curentRepaymentID);
+                        da.InsertCommand.ExecuteNonQuery();
+
+                        count++;
+                        depositBalance = depositBalance - tempRepBalance;
+                        tempRepBalance = mDueAmount;
+
+
+                        //set it to zero after use
+                        totalMultiDeposit4LastRepID = 0;
+                    }//EndOfWhileLoop
 
                     string query2 = "INSERT INTO tblTransactions VALUES(@PaidDate,@Info, @Credit, @Debit, @LoanID, @Balance)";
                     da.InsertCommand = new SqlCommand(query2, conn, transaction);
                     da.InsertCommand.Parameters.AddWithValue("@PaidDate", mPaidDate);
-                    da.InsertCommand.Parameters.AddWithValue("@Info", mLoanID+"-REPAYMNT");
+                    da.InsertCommand.Parameters.AddWithValue("@Info", mLoanID + "-REPAYMNT");
                     da.InsertCommand.Parameters.AddWithValue("@Credit", mDeposit);
                     da.InsertCommand.Parameters.AddWithValue("@Debit", 0);
                     da.InsertCommand.Parameters.AddWithValue("@LoanID", mLoanID);
@@ -276,7 +342,7 @@ namespace XpressLoan.Forms
                     da.InsertCommand.ExecuteNonQuery();
 
 
-                    if(balance == 0)
+                    if (balance >= 0)
                     {
                         string query5 = "UPDATE tblLoans SET Status=@status WHERE LoanID=@loanId";
                         da.UpdateCommand = new SqlCommand(query5, conn, transaction);
@@ -288,10 +354,23 @@ namespace XpressLoan.Forms
                     transaction.Commit();
                     conn.Close();
                 }
-                catch(Exception ex) { transaction.Rollback();
-                    MessageBox.Show(ex.Message);
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    //MessageBox.Show(ex.Message);
+                    FormMessage fm = new FormMessage("Repayment exceeded, Pay exact amount for last loan");
+                    fm.ShowDialog();
+                }
+                finally
+                {
+                    //submitRecord();
+                    
                 }
             }
+            
+            
+
+            
         }
 
         private void repaymentDateTimePicker_ValueChanged(object sender, EventArgs e)
@@ -345,26 +424,28 @@ namespace XpressLoan.Forms
 
         private void txtAmount_TextChanged_1(object sender, EventArgs e)
         {
+            
             try
             {
                 double value = Convert.ToDouble(txtAmount.Text);
                 if (value > mRepBalance)
                 {
-                    //show error textbox
+                    /*//show error textbox
                     txtError.Visible = true;
                     //add error msg
                     txtError.Text = "Amount cannot be more than balance";
                     txtAmount.Text = txtAmount.Text.Substring(0,  txtAmount.TextLength -1);
-                    //
+                    //*/
                     double balance = mRepBalance;
                     double amountEntered = Convert.ToDouble(txtAmount.Text);
                     double currentBalance = balance - amountEntered;
-                    txtBalance.Text = currentBalance.ToString();
+                    currentBalance *= -1;
+                    txtBalance.Text = currentBalance.ToString()+ "  Extra";
                 }
                 else
                 {
                     //hide error textbox
-                    //
+                    //txtBalance.Text = string.Format("{0:0.00}", mRepBalance);
                     double balance = mRepBalance;
                     double amountEntered = Convert.ToDouble(txtAmount.Text);
                     double currentBalance = balance - amountEntered;
@@ -372,7 +453,7 @@ namespace XpressLoan.Forms
                 }
             }
             catch(Exception ex) { }
-           
+            
         }
     }
 }

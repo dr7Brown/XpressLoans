@@ -15,6 +15,7 @@ using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using XpressLoan.Classes;
@@ -26,12 +27,14 @@ namespace XpressLoan.Forms
     {
         SqlDataAdapter da = new SqlDataAdapter();
         bool isLogoSet = false;
+        string updateSuccessMsg = "";
         //bool isAuth = false;
         //public static bool isValidated = false;
         public FormSettings()
         {
             InitializeComponent();
             fillFields();
+            btnReset.Enabled = false;
         }
         public void fillFields()
         {
@@ -373,9 +376,7 @@ namespace XpressLoan.Forms
                     if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         if (openFileDialog1.CheckFileExists)
-                        {
-                            
-
+                        {                           
                             txtError2.Visible = false;
                             txtSuccess2.Visible = false;
                             progressBar2.Visible = true;
@@ -426,5 +427,277 @@ namespace XpressLoan.Forms
             else { MessageBox.Show("Wrong Credentials entered"); }
         }
 
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            updateSuccessMsg = "";
+            try
+            {
+                progressBar2.Visible = true;
+                //update DB     
+                createUpdateTable();
+                //Transaction table
+                addCascadeDelete(primaryTableName: "tblLoans", foreignTableName: "tblTransactions", constrainName: "FK_tblTransactions_tblLoans", primaryKey: "LoanID", updateName: "add_del_cascade_to_tblTrans");
+
+                //RepDeposit table
+                addCascadeDelete(primaryTableName: "tblRepayment", foreignTableName: "tblRepDeposits", constrainName: "FK_tblRepDeposits_tblRepayment", primaryKey: "RepaymentID", updateName: "add_del_cascade_to_tblRepDep");
+                //Repayments table
+                addCascadeDelete(primaryTableName: "tblLoans", foreignTableName: "tblRepayment", constrainName: "FK_tblRepayment_tblLoans", primaryKey: "LoanID", updateName: "add_del_cascade_to_tblRepmt");
+                //Profile table
+                addCascadeDelete(primaryTableName: "tblCustomers", foreignTableName: "tblProfile", constrainName: "FK_tblProfile_tblCustomers", primaryKey: "CustomerID", updateName: "add_del_cascade_to_tblProfl");
+                //Loans table
+                addCascadeDelete(primaryTableName: "tblCustomers", foreignTableName: "tblLoans", constrainName: "FK_tblLoans_tblCustomers", primaryKey: "CustomerID", updateName: "add_del_cascade_to_tblLoans");
+                //Expenses table
+                addCascadeDelete(primaryTableName: "tblUsers", foreignTableName: "tblExpenses", constrainName: "FK_tblExpenses_tblUsers", primaryKey: "UserID", updateName: "add_del_cascade_to_tblExpenses");
+                //Deposit table
+                addCascadeDelete(primaryTableName: "tblUsers", foreignTableName: "tblDeposit", constrainName: "FK_tblDeposit_tblUsers", primaryKey: "UserID", updateName: "add_del_cascade_to_tblDeposits");
+                //Expenses table
+                addCascadeDelete(primaryTableName: "tblCustomers", foreignTableName: "tblAccount", constrainName: "FK_tblAccount_tblCustomers", primaryKey: "CustomerID", updateName: "add_del_cascade_to_tblAccount");
+                createRestructureTable();
+                showProgressBar(progressBar2);
+                MessageBox.Show(updateSuccessMsg);
+
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            finally
+            {
+                // Hide the spinner
+                progressBar2.Visible = false;
+            }
+        }
+        
+        private void createUpdateTable()
+        {
+            // Specify the table name to check
+            string tableName = "tblUpdates";
+
+            // Create the SQL query to check if the table exists
+            string updateTableExistsQuery = $@"
+            SELECT 1
+            FROM INFORMATION_SCHEMA.TABLES
+            WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = '{tableName}'";
+
+            // Create a connection to the database
+            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            {
+                try
+                {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    // Create a command object with the table exists query and the connection
+                    using (SqlCommand command = new SqlCommand(updateTableExistsQuery, conn))
+                    {
+                        /*string createTableSql = "DROP TABLE tblUpdates";
+                        using (SqlCommand command2 = new SqlCommand(createTableSql, conn))
+                        {
+                            try
+                            {
+                                // Execute the command to create the table
+                                command2.ExecuteNonQuery();
+                                MessageBox.Show("Table droped successfully!");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Table drop failed: " + ex.Message);
+                            }
+                        }*/
+
+                        // Execute the query and check if any rows are returned
+                        object result = command.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            updateSuccessMsg += "\n Update Table already exists!";
+                        }
+                        else
+                        {
+
+
+                            // Create the SQL statement to create the table
+                            string createTableSql = @"
+                            CREATE TABLE tblUpdates (
+                                ID INT IDENTITY(1,1) PRIMARY KEY,
+                                Type VARCHAR(50),
+                                UpdateName VARCHAR(50),
+                                Status INT 
+                            )";
+
+                            using (SqlCommand command2 = new SqlCommand(createTableSql, conn))
+                            {
+                                try
+                                {
+                                    // Execute the command to create the table
+                                    command2.ExecuteNonQuery();
+                                    updateSuccessMsg += "\n Table created successfully!";
+                                }
+                                catch (Exception ex)
+                                {
+                                    updateSuccessMsg += "\n Table creation failed: " + ex.Message;
+                                }
+                            }
+
+                        }
+                    }
+                }catch(Exception ex) {
+                    updateSuccessMsg += "\n "+ex.Message; }
+
+
+            }
+        }
+        private bool isUpdatedAlready( string updateName)
+        {
+            bool isUpdated = false;
+            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                string query = "SELECT * FROM tblUpdates WHERE UpdateName = @UpdateName";               
+                da.SelectCommand = new SqlCommand(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@UpdateName", updateName);
+                SqlDataReader dr;
+                try
+                {
+                    dr = da.SelectCommand.ExecuteReader();
+
+                    if (dr.HasRows)
+                    {
+                        isUpdated = true;
+                    }
+                    else
+                    {
+                        isUpdated= false;
+                    }
+                    dr.Close();
+                    conn.Close();
+                }
+                catch (Exception exception)
+                {
+                    updateSuccessMsg += "\n Error occured" + exception.Message;
+                }
+                return isUpdated;
+            }
+        }
+        private void addCascadeDelete(string primaryTableName, string foreignTableName, string constrainName, string primaryKey, string updateName)
+        {
+            if(!isUpdatedAlready(updateName))
+            {
+                //perform update
+                using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+                {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+                    SqlTransaction transaction = conn.BeginTransaction();
+                    try
+                    {
+                        // Step 1: Drop the existing foreign key constraint
+                        string dropConstraintQuery = "ALTER TABLE " + foreignTableName + " DROP CONSTRAINT " + constrainName;
+                        using (SqlCommand command = new SqlCommand(dropConstraintQuery, conn, transaction))
+                        {
+                            command.ExecuteNonQuery();
+                        }
+
+                        // Step 2: Re-create the foreign key constraint with ON DELETE CASCADE
+                        string addConstraintQuery = "ALTER TABLE " + foreignTableName + "  ADD CONSTRAINT " + constrainName + " FOREIGN KEY (" + primaryKey + ") REFERENCES " + primaryTableName + "(" + primaryKey + ") ON DELETE CASCADE";
+                        using (SqlCommand command = new SqlCommand(addConstraintQuery, conn, transaction))
+                        {
+                            command.ExecuteNonQuery();
+                        }
+
+                        // Step 3: Notify update database
+                        string query = "INSERT INTO tblUpdates VALUES( @Type, @UpdateName, @Status)";
+                        da.InsertCommand = new SqlCommand(query, conn, transaction);
+                        da.InsertCommand.Parameters.AddWithValue("@Type", "AlterTables");
+                        da.InsertCommand.Parameters.AddWithValue("@UpdateName", updateName);
+                        da.InsertCommand.Parameters.AddWithValue("@Status", 1);
+                        da.InsertCommand.ExecuteNonQuery();
+
+                        transaction.Commit();
+                        conn.Close();
+                        updateSuccessMsg += "\n " +updateName +" updated successfully";
+                    }
+                    catch (Exception ex)
+                    {
+                        // Roll back the transaction if an error occurred
+                        transaction.Rollback();
+                        updateSuccessMsg += "\n "+ex.Message;
+                    }
+                }
+            }
+            else
+            {
+                updateSuccessMsg += "\n "+ updateName + " Already up to date";
+            }
+           
+        }//use sql transaction
+        private void createRestructureTable()
+        {
+            // Specify the table name to check
+            string tableName = "tblRestructuredLoans";
+
+            // Create the SQL query to check if the table exists
+            string updateTableExistsQuery = $@"
+            SELECT 1
+            FROM INFORMATION_SCHEMA.TABLES
+            WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = '{tableName}'";
+
+            // Create a connection to the database
+            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            {
+                try
+                {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    // Create a command object with the table exists query and the connection
+                    using (SqlCommand command = new SqlCommand(updateTableExistsQuery, conn))
+                    {
+                        // Execute the query and check if any rows are returned
+                        object result = command.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            updateSuccessMsg += "\n RestructuredLoans Table already exists!";
+                        }
+                        else
+                        {
+
+
+                            // Create the SQL statement to create the table
+                            string createTableSql = @"
+                            CREATE TABLE tblRestructuredLoans (
+                                ID INT IDENTITY(1,1) PRIMARY KEY,
+                                CustomerID INT,
+                                PrevLoanID INT,
+                                NewLoanID INT, 
+                                Date VARCHAR(50), 
+                            FOREIGN KEY(CustomerID) REFERENCES tblCustomers(CustomerID) ON DELETE CASCADE
+                            )";
+
+                            using (SqlCommand command2 = new SqlCommand(createTableSql, conn))
+                            {
+                                try
+                                {
+                                    // Execute the command to create the table
+                                    command2.ExecuteNonQuery();
+                                    updateSuccessMsg += "\n RestructuredLoans Table created successfully!";
+                                }
+                                catch (Exception ex)
+                                {
+                                    updateSuccessMsg += "\n RestructuredLoans Table creation failed: " + ex.Message;
+                                }
+                            }
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    updateSuccessMsg += "\n " + ex.Message;
+                }
+
+
+            }
+        }
     }
 }

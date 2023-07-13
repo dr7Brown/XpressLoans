@@ -72,6 +72,7 @@ namespace XpressLoan.Forms
             this.CustomerID = CustomerID;
             getCurrentCustomer();
             fillLoanDG();
+            btnDeleteCus.Visible = false;
         }
         public FormUserDetails(int CustomerID, int loanID)
         {
@@ -83,6 +84,28 @@ namespace XpressLoan.Forms
             fillLoanCB_FrmRep(loanID);
             metroTabControl1.SelectedTab = repaymentMetroTab;
             fillDG_Repayments(loanID);
+            btnDeleteCus.Visible = false;
+        }
+        void refresh()
+        {
+            if (isConstructor1)
+            {
+                isConstructor1 = true;
+                this.CustomerID = CustomerID;
+                getCurrentCustomer();
+                fillLoanDG();
+                btnDeleteCus.Visible = false;
+            }
+            else
+            {
+                isConstructor1 = false;
+                this.CustomerID = CustomerID;
+                getCurrentCustomer();
+                fillLoanCB_FrmRep(repaymentLoanID);
+                metroTabControl1.SelectedTab = repaymentMetroTab;
+                fillDG_Repayments(repaymentLoanID);
+                btnDeleteCus.Visible = false;
+            }
         }
         private void showProgressBar()
         {
@@ -171,7 +194,7 @@ namespace XpressLoan.Forms
             }
             finally
             {
-
+                btnDeleteCus.Visible = false;
                 genderComboBox.Enabled = false;
                 customerIDTextBox.ReadOnly = true;
                 nameTextBox.ReadOnly = true;
@@ -439,6 +462,7 @@ namespace XpressLoan.Forms
             idTypeComboBox.Enabled = true;
             addressTextBox.ReadOnly = false;
             btnSave.Visible = true;
+            btnDeleteCus.Visible = true;
         }
 
         private void btnSave_Click_1(object sender, EventArgs e)
@@ -642,15 +666,103 @@ namespace XpressLoan.Forms
                     int repaymentID = Convert.ToInt32(tblRepaymentDataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString());
                     double amount = Convert.ToDouble(tblRepaymentDataGridView1.Rows[e.RowIndex].Cells[3].Value.ToString());
                     string status = tblRepaymentDataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString();
-                    FormAddRepayment fr = new FormAddRepayment(repaymentID, CustomerID, Name, repaymentLoanID, amount, status);
-                    fr.ShowDialog(this);
-                    fillDG_Repayments(repaymentLoanID);
+                    if(isCurrentRepayment(loanId: repaymentLoanID, repaymentId: repaymentID)&& isCurrentRepaymentConfirm(loanId: repaymentLoanID, repaymentId: repaymentID))
+                    {
+                        FormAddRepayment fr = new FormAddRepayment(repaymentID, CustomerID, Name, repaymentLoanID, amount, status);
+                        fr.ShowDialog(this);
+                        fillDG_Repayments(repaymentLoanID);
+                    }
+                    else
+                    {
+                        FormMessage formMessage = new FormMessage("Wrong Item Selected");
+                        formMessage.ShowDialog(this);
+                    }
+                    
+                    
                 }
             }
             catch(Exception exception) { }
             
         }
 
+        private bool isCurrentRepayment(int loanId, int repaymentId)
+        {
+            bool isActive = false;
+            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                //                string query = "SELECT * FROM tblRepayment WHERE (LoanID=@LoanID AND RepaymentID<@RepaymentID AND (Status=@Status1 OR Status=@Status2) AND (RepaymentID=@RepaymentID AND Status=@Status3))"; // AND Status=@Status1 ";
+                string query = "SELECT * FROM tblRepayment " +
+                    "WHERE (LoanID=@LoanID AND RepaymentID<@RepaymentID " +
+                    "AND (Status=@Status1 OR Status=@Status2))"; //AND (RepaymentID=@RepaymentID AND Status=@Status3))"; // AND Status=@Status1 ";
+                da.SelectCommand = new SqlCommand(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@LoanID", loanId);
+                da.SelectCommand.Parameters.AddWithValue("@RepaymentID", repaymentId);
+                da.SelectCommand.Parameters.AddWithValue("@Status1", "PARTIAL");
+                da.SelectCommand.Parameters.AddWithValue("@Status2", "UNPAID");
+                //da.SelectCommand.Parameters.AddWithValue("@Status3", "PAID");
+
+                SqlDataReader dr;
+                try
+                {
+                    dr = da.SelectCommand.ExecuteReader();
+                    if(!dr.HasRows)
+                    {
+                        isActive = true;
+                    }
+                    else
+                    {
+                        isActive = false;
+                    }
+                    dr.Close();
+                    conn.Close();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+            return isActive;
+        }
+        private bool isCurrentRepaymentConfirm(int loanId, int repaymentId)
+        {
+            bool isActive = false;
+            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                //                string query = "SELECT * FROM tblRepayment WHERE (LoanID=@LoanID AND RepaymentID<@RepaymentID AND (Status=@Status1 OR Status=@Status2) AND (RepaymentID=@RepaymentID AND Status=@Status3))"; // AND Status=@Status1 ";
+                string query = "SELECT * FROM tblRepayment " +
+                    "WHERE (LoanID=@LoanID AND RepaymentID>@RepaymentID " +
+                    "AND Status!=@Status)"; 
+                da.SelectCommand = new SqlCommand(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@LoanID", loanId);
+                da.SelectCommand.Parameters.AddWithValue("@RepaymentID", repaymentId);
+                da.SelectCommand.Parameters.AddWithValue("@Status", "UNPAID");
+
+                SqlDataReader dr;
+                try
+                {
+                    dr = da.SelectCommand.ExecuteReader();
+                    if (!dr.HasRows)
+                    {
+                        isActive = true;
+                    }
+                    else
+                    {
+                        isActive = false;
+                    }
+                    dr.Close();
+                    conn.Close();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+            return isActive;
+        }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             fillDG_Repayments(repaymentLoanID);
@@ -821,75 +933,198 @@ namespace XpressLoan.Forms
                     break;
             }
         }
+        public int getLoanByCustomerID(int cusID)
+        {
+            int prevLoanID = 0;
+            try
+            {             
+                using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+                {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+                    string query = "select PrevLoanID from tblRestructuredLoans WHERE CustomerID LIKE @CustomerID ORDER BY ID DESC";
+                    da.SelectCommand = new SqlCommand(query, conn);
+                    da.SelectCommand.Parameters.AddWithValue("@CustomerID", cusID);
+
+                    SqlDataReader dr;
+
+                    dr = da.SelectCommand.ExecuteReader();
+
+                    dr.Read();
+                    {
+                        prevLoanID = Convert.ToInt32(dr["LoanID"]);
+                    }
+                    dr.Close();
+                    //Close connection
+                    conn.Close();
+                }
+            }
+            catch (Exception exception)
+            { }
+            return prevLoanID;
+        }
 
         void approveLoan(int loanId, List<string> repaymentDates, double myRepayments)
         {
             ld = new LoanDetails(loanId);
-            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            if(ld.status == "UNAPPROVED")
             {
-                if (conn.State != ConnectionState.Open)
-                    conn.Open();
-                SqlTransaction transaction = conn.BeginTransaction();
-                try
-                {   
-                   //status, PaidDate, Comments
-                    string query = "UPDATE tblLoans SET Status=@status WHERE LoanID=@loanId";
-                    da.UpdateCommand = new SqlCommand(query, conn, transaction);
-                    da.UpdateCommand.Parameters.AddWithValue("@status", "APPROVED");
-                    da.UpdateCommand.Parameters.AddWithValue("@loanId", loanId);
-                    da.UpdateCommand.ExecuteNonQuery();
-
-                    //
-                    string query2 = "INSERT INTO tblRepayment VALUES(@RepaymentID, @LoanID, @RepaymentDate, @Amount, @Status, @PaidDate, @Comments, @Paid)";
-                    int repaymentID = generateRepaymentID();
-                    foreach (string date in repaymentDates)
+                int prevLoanID = getLoanByCustomerID(CustomerID);
+                    using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+                {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+                    SqlTransaction transaction = conn.BeginTransaction();
+                    try
                     {
-                        da.InsertCommand = new SqlCommand(query2, conn, transaction);
-                        da.InsertCommand.Parameters.AddWithValue("@RepaymentID", repaymentID);
+                        //status, PaidDate, Comments
+                        string query = "UPDATE tblLoans SET Status=@status WHERE LoanID=@loanId";
+                        da.UpdateCommand = new SqlCommand(query, conn, transaction);
+                        da.UpdateCommand.Parameters.AddWithValue("@status", "APPROVED");
+                        da.UpdateCommand.Parameters.AddWithValue("@loanId", loanId);
+                        da.UpdateCommand.ExecuteNonQuery();
+
+                        //
+                        string query2 = "INSERT INTO tblRepayment VALUES(@RepaymentID, @LoanID, @RepaymentDate, @Amount, @Status, @PaidDate, @Comments, @Paid)";
+                        int repaymentID = generateRepaymentID();
+                        foreach (string date in repaymentDates)
+                        {
+                            da.InsertCommand = new SqlCommand(query2, conn, transaction);
+                            da.InsertCommand.Parameters.AddWithValue("@RepaymentID", repaymentID);
+                            da.InsertCommand.Parameters.AddWithValue("@LoanID", loanId);
+                            da.InsertCommand.Parameters.AddWithValue("@RepaymentDate", date);
+                            da.InsertCommand.Parameters.AddWithValue("@Amount", myRepayments);
+                            da.InsertCommand.Parameters.AddWithValue("@Status", "UNPAID");
+                            da.InsertCommand.Parameters.AddWithValue("@PaidDate", "-");
+                            da.InsertCommand.Parameters.AddWithValue("@Comments", "-");
+                            da.InsertCommand.Parameters.AddWithValue("@Paid", "0");
+                            da.InsertCommand.ExecuteNonQuery();
+                            //next repayment ID
+                            repaymentID += 1;
+                        }
+                        //update repayments statuses for rescheduled loan
+                        string updatePrevRepStat = "UPDATE tblRepayment SET Status=@stat WHERE LoanID=@prevLoanID AND Status!=@stat2";
+                        da.UpdateCommand = new SqlCommand(updatePrevRepStat, conn, transaction);
+                        da.UpdateCommand.Parameters.AddWithValue("@stat", "CANCELLED");
+                        da.UpdateCommand.Parameters.AddWithValue("@prevLoanID", prevLoanID);
+                        da.UpdateCommand.Parameters.AddWithValue("@stat2", "PAID");
+                        da.UpdateCommand.ExecuteNonQuery();
+
+                        //update previous loan as completed for rescheduled loan
+                        string updatePrevLoanTab = "UPDATE tblLoans SET Status=@stat WHERE LoanID=@prevLoanID";
+                        da.UpdateCommand = new SqlCommand(updatePrevLoanTab, conn, transaction);
+                        da.UpdateCommand.Parameters.AddWithValue("@stat", "COMPLETED");
+                        da.UpdateCommand.Parameters.AddWithValue("@prevLoanID", prevLoanID);
+                        da.UpdateCommand.ExecuteNonQuery();
+                        //
+                        string mTransInfo = "LOAN" + loanId;
+                        string query3 = "INSERT INTO tblTransactions VALUES(@AppDate,@Info, @Credit, @Debit, @LoanID, @Balance)";
+                        da.InsertCommand = new SqlCommand(query3, conn, transaction);
+                        da.InsertCommand.Parameters.AddWithValue("@AppDate", ld.applicationDate);
+                        da.InsertCommand.Parameters.AddWithValue("@Info", mTransInfo);
+                        da.InsertCommand.Parameters.AddWithValue("@Credit", 0);
+                        da.InsertCommand.Parameters.AddWithValue("@Debit", ld.amount);
                         da.InsertCommand.Parameters.AddWithValue("@LoanID", loanId);
-                        da.InsertCommand.Parameters.AddWithValue("@RepaymentDate", date);
-                        da.InsertCommand.Parameters.AddWithValue("@Amount", myRepayments);
-                        da.InsertCommand.Parameters.AddWithValue("@Status", "UNPAID");
-                        da.InsertCommand.Parameters.AddWithValue("@PaidDate", "-");
-                        da.InsertCommand.Parameters.AddWithValue("@Comments", "-");
-                        da.InsertCommand.Parameters.AddWithValue("@Paid", "0");
+                        da.InsertCommand.Parameters.AddWithValue("@Balance", (ld.amount * -1));
                         da.InsertCommand.ExecuteNonQuery();
-                        //next repayment ID
-                        repaymentID += 1;
+
+                        mTransInfo = "LOAN" + loanId + " INTEREST";
+                        string query4 = "INSERT INTO tblTransactions VALUES(@AppDate,@Info, @Credit, @Debit, @LoanID, @Balance)";
+                        da.InsertCommand = new SqlCommand(query4, conn, transaction);
+                        da.InsertCommand.Parameters.AddWithValue("@AppDate", ld.applicationDate);
+                        da.InsertCommand.Parameters.AddWithValue("@Info", mTransInfo);
+                        da.InsertCommand.Parameters.AddWithValue("@Credit", 0);
+                        da.InsertCommand.Parameters.AddWithValue("@Debit", ld.interest);
+                        da.InsertCommand.Parameters.AddWithValue("@LoanID", loanId);
+                        da.InsertCommand.Parameters.AddWithValue("@Balance", ((ld.interest + ld.amount) * -1));
+                        da.InsertCommand.ExecuteNonQuery();
+
+                        // Commit the transaction
+                        transaction.Commit();
+                        aproveSuccessfull = true;
+                        //
+                        conn.Close();
                     }
-
-                    
-                    string mTransInfo = "LOAN" + loanId;
-                    string query3 = "INSERT INTO tblTransactions VALUES(@AppDate,@Info, @Credit, @Debit, @LoanID, @Balance)";
-                    da.InsertCommand = new SqlCommand(query3, conn, transaction);
-                    da.InsertCommand.Parameters.AddWithValue("@AppDate", ld.applicationDate);
-                    da.InsertCommand.Parameters.AddWithValue("@Info", mTransInfo);
-                    da.InsertCommand.Parameters.AddWithValue("@Credit", 0);
-                    da.InsertCommand.Parameters.AddWithValue("@Debit", ld.amount);
-                    da.InsertCommand.Parameters.AddWithValue("@LoanID", loanId);
-                    da.InsertCommand.Parameters.AddWithValue("@Balance", (ld.amount * -1));
-                    da.InsertCommand.ExecuteNonQuery();
-
-                    mTransInfo = "LOAN" + loanId + " INTEREST";
-                    string query4 = "INSERT INTO tblTransactions VALUES(@AppDate,@Info, @Credit, @Debit, @LoanID, @Balance)";
-                    da.InsertCommand = new SqlCommand(query4, conn, transaction);
-                    da.InsertCommand.Parameters.AddWithValue("@AppDate", ld.applicationDate);
-                    da.InsertCommand.Parameters.AddWithValue("@Info", mTransInfo);
-                    da.InsertCommand.Parameters.AddWithValue("@Credit", 0);
-                    da.InsertCommand.Parameters.AddWithValue("@Debit", ld.interest);
-                    da.InsertCommand.Parameters.AddWithValue("@LoanID", loanId);
-                    da.InsertCommand.Parameters.AddWithValue("@Balance", ((ld.interest +ld.amount) * -1) );
-                    da.InsertCommand.ExecuteNonQuery();
-
-                    // Commit the transaction
-                    transaction.Commit();
-                    aproveSuccessfull = true;
-                    //
-                    conn.Close();
-                }catch(Exception ex) { transaction.Rollback(); MessageBox.Show(ex.Message + "here");
-                    aproveSuccessfull = false;
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback(); MessageBox.Show(ex.Message + "here");
+                        aproveSuccessfull = false;
+                    }
                 }
             }
+            else if(ld.status== "PENDING"){
+                using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+                {
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+                    SqlTransaction transaction = conn.BeginTransaction();
+                    try
+                    {
+                        //status, PaidDate, Comments
+                        string query = "UPDATE tblLoans SET Status=@status WHERE LoanID=@loanId";
+                        da.UpdateCommand = new SqlCommand(query, conn, transaction);
+                        da.UpdateCommand.Parameters.AddWithValue("@status", "APPROVED");
+                        da.UpdateCommand.Parameters.AddWithValue("@loanId", loanId);
+                        da.UpdateCommand.ExecuteNonQuery();
+
+                        //
+                        string query2 = "INSERT INTO tblRepayment VALUES(@RepaymentID, @LoanID, @RepaymentDate, @Amount, @Status, @PaidDate, @Comments, @Paid)";
+                        int repaymentID = generateRepaymentID();
+                        foreach (string date in repaymentDates)
+                        {
+                            da.InsertCommand = new SqlCommand(query2, conn, transaction);
+                            da.InsertCommand.Parameters.AddWithValue("@RepaymentID", repaymentID);
+                            da.InsertCommand.Parameters.AddWithValue("@LoanID", loanId);
+                            da.InsertCommand.Parameters.AddWithValue("@RepaymentDate", date);
+                            da.InsertCommand.Parameters.AddWithValue("@Amount", myRepayments);
+                            da.InsertCommand.Parameters.AddWithValue("@Status", "UNPAID");
+                            da.InsertCommand.Parameters.AddWithValue("@PaidDate", "-");
+                            da.InsertCommand.Parameters.AddWithValue("@Comments", "-");
+                            da.InsertCommand.Parameters.AddWithValue("@Paid", "0");
+                            da.InsertCommand.ExecuteNonQuery();
+                            //next repayment ID
+                            repaymentID += 1;
+                        }
+                        
+                        //
+                        string mTransInfo = "LOAN" + loanId;
+                        string query3 = "INSERT INTO tblTransactions VALUES(@AppDate,@Info, @Credit, @Debit, @LoanID, @Balance)";
+                        da.InsertCommand = new SqlCommand(query3, conn, transaction);
+                        da.InsertCommand.Parameters.AddWithValue("@AppDate", ld.applicationDate);
+                        da.InsertCommand.Parameters.AddWithValue("@Info", mTransInfo);
+                        da.InsertCommand.Parameters.AddWithValue("@Credit", 0);
+                        da.InsertCommand.Parameters.AddWithValue("@Debit", ld.amount);
+                        da.InsertCommand.Parameters.AddWithValue("@LoanID", loanId);
+                        da.InsertCommand.Parameters.AddWithValue("@Balance", (ld.amount * -1));
+                        da.InsertCommand.ExecuteNonQuery();
+
+                        mTransInfo = "LOAN" + loanId + " INTEREST";
+                        string query4 = "INSERT INTO tblTransactions VALUES(@AppDate,@Info, @Credit, @Debit, @LoanID, @Balance)";
+                        da.InsertCommand = new SqlCommand(query4, conn, transaction);
+                        da.InsertCommand.Parameters.AddWithValue("@AppDate", ld.applicationDate);
+                        da.InsertCommand.Parameters.AddWithValue("@Info", mTransInfo);
+                        da.InsertCommand.Parameters.AddWithValue("@Credit", 0);
+                        da.InsertCommand.Parameters.AddWithValue("@Debit", ld.interest);
+                        da.InsertCommand.Parameters.AddWithValue("@LoanID", loanId);
+                        da.InsertCommand.Parameters.AddWithValue("@Balance", ((ld.interest + ld.amount) * -1));
+                        da.InsertCommand.ExecuteNonQuery();
+
+                        // Commit the transaction
+                        transaction.Commit();
+                        aproveSuccessfull = true;
+                        //
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback(); MessageBox.Show(ex.Message + "here");
+                        aproveSuccessfull = false;
+                    }
+                }
+            }
+
+            
+            
             
         }
         void cancelLoan(int loanId)
@@ -1337,5 +1572,73 @@ namespace XpressLoan.Forms
             if (ckbxEnableStatus.Checked) { isStatusChecked = true; } 
             else { isStatusChecked = false; }
         }
+
+        private async Task DeleteCustomer()
+        {
+            try
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to delete this customer?", "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    // Show the spinner
+                    progressBar1.Show();
+                    showProgressBar();
+                    // Perform the delete operation
+                    deleteCustomer(CustomerID);
+                    refresh();
+                }
+                formMessage = new FormMessage("Customer deleted successfully");
+                formMessage.ShowDialog(this);
+                fillLoanDG();
+            }
+            catch (Exception exception)
+            {
+                formMessage = new FormMessage("Customer deletion Failed " + exception.Message);
+                formMessage.ShowDialog(this);
+                fillLoanDG();
+            }
+            finally
+            {
+                btnDeleteCus.Visible = false;
+                genderComboBox.Enabled = false;
+                customerIDTextBox.ReadOnly = true;
+                nameTextBox.ReadOnly = true;
+                phoneTextBox.ReadOnly = true;
+                idNumberTextBox.ReadOnly = true;
+                idTypeComboBox.Enabled = false;
+                addressTextBox.ReadOnly = true;
+
+                txtTextCount.Visible = false;
+                progressBar1.Hide();
+                btnSave.Visible = false;
+            }
+        }
+        private void deleteCustomer(int customerId)
+        {
+            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                string query = "DELETE FROM tblCustomers WHERE CustomerID = @CustomerID";
+                da.DeleteCommand = new SqlCommand(query, conn);
+                da.DeleteCommand.Parameters.AddWithValue("@CustomerID", customerId);
+
+                    da.DeleteCommand.ExecuteReader();  
+                    conn.Close();                
+            }
+        }
+        private void btnDeleteCus_Click(object sender, EventArgs e)
+        {
+            DeleteCustomer();
+        }
+
+        private void btnRestructure_Click(object sender, EventArgs e)
+        {
+            FormRestructureLoan fa = new FormRestructureLoan(CustomerID, Name, repaymentLoanID);
+            fa.ShowDialog(this);
+            fillLoanDG();
+        }
+
+
     }
 }

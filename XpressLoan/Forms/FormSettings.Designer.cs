@@ -51,9 +51,10 @@
             this.txtbMd = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnReset = new System.Windows.Forms.Button();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.txtSuccess2 = new System.Windows.Forms.TextBox();
             this.txtError2 = new System.Windows.Forms.TextBox();
+            this.txtSuccess2 = new System.Windows.Forms.TextBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.btnUpdate = new System.Windows.Forms.Button();
             amountLabel = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -249,6 +250,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.PapayaWhip;
+            this.groupBox1.Controls.Add(this.btnUpdate);
             this.groupBox1.Controls.Add(this.progressBar2);
             this.groupBox1.Controls.Add(this.btnRestore);
             this.groupBox1.Controls.Add(this.btnBackup);
@@ -259,7 +261,7 @@
             this.groupBox1.Location = new System.Drawing.Point(29, 404);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(10);
-            this.groupBox1.Size = new System.Drawing.Size(673, 300);
+            this.groupBox1.Size = new System.Drawing.Size(867, 300);
             this.groupBox1.TabIndex = 53;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Backup";
@@ -268,7 +270,7 @@
             // 
             this.progressBar2.Location = new System.Drawing.Point(0, 290);
             this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(673, 10);
+            this.progressBar2.Size = new System.Drawing.Size(870, 10);
             this.progressBar2.TabIndex = 54;
             // 
             // btnRestore
@@ -352,9 +354,20 @@
             this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // openFileDialog1
+            // txtError2
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.txtError2.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.txtError2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtError2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtError2.ForeColor = System.Drawing.Color.Red;
+            this.txtError2.Location = new System.Drawing.Point(379, 712);
+            this.txtError2.Margin = new System.Windows.Forms.Padding(100, 4, 4, 4);
+            this.txtError2.Name = "txtError2";
+            this.txtError2.ReadOnly = true;
+            this.txtError2.Size = new System.Drawing.Size(323, 23);
+            this.txtError2.TabIndex = 47;
+            this.txtError2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtError2.Visible = false;
             // 
             // txtSuccess2
             // 
@@ -371,20 +384,21 @@
             this.txtSuccess2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtSuccess2.Visible = false;
             // 
-            // txtError2
+            // openFileDialog1
             // 
-            this.txtError2.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.txtError2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtError2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtError2.ForeColor = System.Drawing.Color.Red;
-            this.txtError2.Location = new System.Drawing.Point(379, 712);
-            this.txtError2.Margin = new System.Windows.Forms.Padding(100, 4, 4, 4);
-            this.txtError2.Name = "txtError2";
-            this.txtError2.ReadOnly = true;
-            this.txtError2.Size = new System.Drawing.Size(323, 23);
-            this.txtError2.TabIndex = 47;
-            this.txtError2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtError2.Visible = false;
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.BackColor = System.Drawing.Color.DarkTurquoise;
+            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdate.Location = new System.Drawing.Point(736, 16);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(118, 250);
+            this.btnUpdate.TabIndex = 55;
+            this.btnUpdate.Text = "Check for update";
+            this.btnUpdate.UseVisualStyleBackColor = false;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // FormSettings
             // 
@@ -426,5 +440,6 @@
         private System.Windows.Forms.ProgressBar progressBar2;
         private System.Windows.Forms.TextBox txtError2;
         private System.Windows.Forms.TextBox txtSuccess2;
+        private System.Windows.Forms.Button btnUpdate;
     }
 }

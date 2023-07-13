@@ -386,11 +386,13 @@ namespace XpressLoan.Forms
                 //send user details to 
                 FormUserDetails fu = new FormUserDetails(Convert.ToInt32(cusID));
                 fu.ShowDialog(this);
+                initDate(mDateType);
             }
             else if (e.ColumnIndex == 103)
             {
                 FormMessage fm = new FormMessage(val);
                 fm.ShowDialog(this);
+                initDate(mDateType);
             }
         }
 

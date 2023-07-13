@@ -51,7 +51,7 @@ namespace XpressLoan.Forms
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panelTopRw = new System.Windows.Forms.Panel();
-            this.pbProfile = new System.Windows.Forms.PictureBox();
+            this.btnDeleteCus = new System.Windows.Forms.Button();
             this.txtTextCount = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.btnEdit = new System.Windows.Forms.Button();
@@ -74,8 +74,7 @@ namespace XpressLoan.Forms
             this.repaymentMetroTab = new MetroFramework.Controls.MetroTabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnPrintSchedule = new System.Windows.Forms.Button();
-            this.btnRefresh = new System.Windows.Forms.Button();
+            this.ckbxEnableStatus = new System.Windows.Forms.CheckBox();
             this.cbxLoans = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tblRepaymentDataGridView1 = new System.Windows.Forms.DataGridView();
@@ -83,8 +82,6 @@ namespace XpressLoan.Forms
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.cbxTransLoans = new System.Windows.Forms.ComboBox();
-            this.btnPrintStmt = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.dgvTransactions = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -117,7 +114,12 @@ namespace XpressLoan.Forms
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.printDocument2 = new System.Drawing.Printing.PrintDocument();
-            this.ckbxEnableStatus = new System.Windows.Forms.CheckBox();
+            this.btnRestructure = new System.Windows.Forms.Button();
+            this.pbProfile = new System.Windows.Forms.PictureBox();
+            this.btnPrintSchedule = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnPrintStmt = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             customerIDLabel = new System.Windows.Forms.Label();
             nameLabel = new System.Windows.Forms.Label();
             genderLabel = new System.Windows.Forms.Label();
@@ -131,7 +133,6 @@ namespace XpressLoan.Forms
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panelTopRw.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbProfile)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblCustomersBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xpressLoanDBDataSet)).BeginInit();
             this.metroPanel1.SuspendLayout();
@@ -152,6 +153,7 @@ namespace XpressLoan.Forms
             ((System.ComponentModel.ISupportInitialize)(this.tblRepaymentBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblUsersBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblRepaymentBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbProfile)).BeginInit();
             this.SuspendLayout();
             // 
             // customerIDLabel
@@ -228,7 +230,7 @@ namespace XpressLoan.Forms
             // 
             label2.AutoSize = true;
             label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            label2.Location = new System.Drawing.Point(12, 15);
+            label2.Location = new System.Drawing.Point(8, 15);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(127, 25);
             label2.TabIndex = 12;
@@ -286,6 +288,7 @@ namespace XpressLoan.Forms
             // panelTopRw
             // 
             this.panelTopRw.AutoScroll = true;
+            this.panelTopRw.Controls.Add(this.btnDeleteCus);
             this.panelTopRw.Controls.Add(this.pbProfile);
             this.panelTopRw.Controls.Add(this.txtTextCount);
             this.panelTopRw.Controls.Add(this.progressBar1);
@@ -315,15 +318,19 @@ namespace XpressLoan.Forms
             this.panelTopRw.Size = new System.Drawing.Size(1281, 235);
             this.panelTopRw.TabIndex = 0;
             // 
-            // pbProfile
+            // btnDeleteCus
             // 
-            this.pbProfile.Image = global::XpressLoan.Properties.Resources.ic_user_bss;
-            this.pbProfile.Location = new System.Drawing.Point(30, 19);
-            this.pbProfile.Name = "pbProfile";
-            this.pbProfile.Size = new System.Drawing.Size(177, 188);
-            this.pbProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbProfile.TabIndex = 44;
-            this.pbProfile.TabStop = false;
+            this.btnDeleteCus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteCus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnDeleteCus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeleteCus.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.btnDeleteCus.Location = new System.Drawing.Point(998, 66);
+            this.btnDeleteCus.Name = "btnDeleteCus";
+            this.btnDeleteCus.Size = new System.Drawing.Size(106, 55);
+            this.btnDeleteCus.TabIndex = 45;
+            this.btnDeleteCus.Text = "Delete";
+            this.btnDeleteCus.UseVisualStyleBackColor = false;
+            this.btnDeleteCus.Click += new System.EventHandler(this.btnDeleteCus_Click);
             // 
             // txtTextCount
             // 
@@ -361,7 +368,7 @@ namespace XpressLoan.Forms
             this.btnEdit.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.btnEdit.Location = new System.Drawing.Point(997, 8);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(106, 99);
+            this.btnEdit.Size = new System.Drawing.Size(106, 55);
             this.btnEdit.TabIndex = 18;
             this.btnEdit.Text = "Edit";
             this.btnEdit.UseVisualStyleBackColor = false;
@@ -503,9 +510,9 @@ namespace XpressLoan.Forms
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(997, 115);
+            this.btnSave.Location = new System.Drawing.Point(997, 122);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(107, 94);
+            this.btnSave.Size = new System.Drawing.Size(107, 87);
             this.btnSave.TabIndex = 18;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -641,6 +648,8 @@ namespace XpressLoan.Forms
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.panel1.Controls.Add(this.btnRestructure);
             this.panel1.Controls.Add(this.ckbxEnableStatus);
             this.panel1.Controls.Add(this.btnPrintSchedule);
             this.panel1.Controls.Add(this.btnRefresh);
@@ -652,38 +661,17 @@ namespace XpressLoan.Forms
             this.panel1.Size = new System.Drawing.Size(1255, 54);
             this.panel1.TabIndex = 0;
             // 
-            // btnPrintSchedule
+            // ckbxEnableStatus
             // 
-            this.btnPrintSchedule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrintSchedule.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.btnPrintSchedule.FlatAppearance.BorderSize = 0;
-            this.btnPrintSchedule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPrintSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrintSchedule.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnPrintSchedule.Image = global::XpressLoan.Properties.Resources.ic_print20;
-            this.btnPrintSchedule.Location = new System.Drawing.Point(899, 4);
-            this.btnPrintSchedule.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnPrintSchedule.Name = "btnPrintSchedule";
-            this.btnPrintSchedule.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.btnPrintSchedule.Size = new System.Drawing.Size(247, 48);
-            this.btnPrintSchedule.TabIndex = 73;
-            this.btnPrintSchedule.Text = "  Print Schedule";
-            this.btnPrintSchedule.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnPrintSchedule.UseVisualStyleBackColor = false;
-            this.btnPrintSchedule.Click += new System.EventHandler(this.btnPrintSchedule_Click);
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.FlatAppearance.BorderSize = 0;
-            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefresh.Image = global::XpressLoan.Properties.Resources.ic_refresh30;
-            this.btnRefresh.Location = new System.Drawing.Point(1176, 4);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(54, 48);
-            this.btnRefresh.TabIndex = 13;
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this.ckbxEnableStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ckbxEnableStatus.AutoSize = true;
+            this.ckbxEnableStatus.Location = new System.Drawing.Point(728, 15);
+            this.ckbxEnableStatus.Name = "ckbxEnableStatus";
+            this.ckbxEnableStatus.Size = new System.Drawing.Size(156, 29);
+            this.ckbxEnableStatus.TabIndex = 74;
+            this.ckbxEnableStatus.Text = "Enable Status";
+            this.ckbxEnableStatus.UseVisualStyleBackColor = true;
+            this.ckbxEnableStatus.CheckedChanged += new System.EventHandler(this.ckbxEnableStatus_CheckedChanged);
             // 
             // cbxLoans
             // 
@@ -694,9 +682,9 @@ namespace XpressLoan.Forms
             this.cbxLoans.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxLoans.FormattingEnabled = true;
             this.cbxLoans.IntegralHeight = false;
-            this.cbxLoans.Location = new System.Drawing.Point(163, 11);
+            this.cbxLoans.Location = new System.Drawing.Point(144, 11);
             this.cbxLoans.Name = "cbxLoans";
-            this.cbxLoans.Size = new System.Drawing.Size(304, 33);
+            this.cbxLoans.Size = new System.Drawing.Size(266, 33);
             this.cbxLoans.TabIndex = 11;
             this.cbxLoans.SelectedIndexChanged += new System.EventHandler(this.cbxLoans_SelectedIndexChanged);
             // 
@@ -798,38 +786,6 @@ namespace XpressLoan.Forms
             this.cbxTransLoans.Size = new System.Drawing.Size(188, 30);
             this.cbxTransLoans.TabIndex = 74;
             this.cbxTransLoans.SelectedIndexChanged += new System.EventHandler(this.cbxTransLoans_SelectedIndexChanged);
-            // 
-            // btnPrintStmt
-            // 
-            this.btnPrintStmt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrintStmt.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.btnPrintStmt.FlatAppearance.BorderSize = 0;
-            this.btnPrintStmt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPrintStmt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrintStmt.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnPrintStmt.Image = global::XpressLoan.Properties.Resources.ic_print20;
-            this.btnPrintStmt.Location = new System.Drawing.Point(919, 4);
-            this.btnPrintStmt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnPrintStmt.Name = "btnPrintStmt";
-            this.btnPrintStmt.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.btnPrintStmt.Size = new System.Drawing.Size(247, 48);
-            this.btnPrintStmt.TabIndex = 73;
-            this.btnPrintStmt.Text = "  Print Statement";
-            this.btnPrintStmt.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnPrintStmt.UseVisualStyleBackColor = false;
-            this.btnPrintStmt.Click += new System.EventHandler(this.btnPrintStmt_Click_1);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Image = global::XpressLoan.Properties.Resources.ic_refresh30;
-            this.button2.Location = new System.Drawing.Point(1196, 4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(54, 48);
-            this.button2.TabIndex = 13;
-            this.button2.UseVisualStyleBackColor = true;
             // 
             // panel4
             // 
@@ -1100,17 +1056,93 @@ namespace XpressLoan.Forms
             // 
             this.printDocument2.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument2_PrintPage);
             // 
-            // ckbxEnableStatus
+            // btnRestructure
             // 
-            this.ckbxEnableStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ckbxEnableStatus.AutoSize = true;
-            this.ckbxEnableStatus.Location = new System.Drawing.Point(728, 15);
-            this.ckbxEnableStatus.Name = "ckbxEnableStatus";
-            this.ckbxEnableStatus.Size = new System.Drawing.Size(156, 29);
-            this.ckbxEnableStatus.TabIndex = 74;
-            this.ckbxEnableStatus.Text = "Enable Status";
-            this.ckbxEnableStatus.UseVisualStyleBackColor = true;
-            this.ckbxEnableStatus.CheckedChanged += new System.EventHandler(this.ckbxEnableStatus_CheckedChanged);
+            this.btnRestructure.BackColor = System.Drawing.Color.Peru;
+            this.btnRestructure.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRestructure.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnRestructure.Location = new System.Drawing.Point(464, 4);
+            this.btnRestructure.Name = "btnRestructure";
+            this.btnRestructure.Size = new System.Drawing.Size(241, 44);
+            this.btnRestructure.TabIndex = 75;
+            this.btnRestructure.Text = "Restructure Loan";
+            this.btnRestructure.UseVisualStyleBackColor = false;
+            this.btnRestructure.Click += new System.EventHandler(this.btnRestructure_Click);
+            // 
+            // pbProfile
+            // 
+            this.pbProfile.Image = ((System.Drawing.Image)(resources.GetObject("pbProfile.Image")));
+            this.pbProfile.Location = new System.Drawing.Point(30, 19);
+            this.pbProfile.Name = "pbProfile";
+            this.pbProfile.Size = new System.Drawing.Size(177, 188);
+            this.pbProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbProfile.TabIndex = 44;
+            this.pbProfile.TabStop = false;
+            // 
+            // btnPrintSchedule
+            // 
+            this.btnPrintSchedule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPrintSchedule.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.btnPrintSchedule.FlatAppearance.BorderSize = 0;
+            this.btnPrintSchedule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrintSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrintSchedule.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnPrintSchedule.Image = ((System.Drawing.Image)(resources.GetObject("btnPrintSchedule.Image")));
+            this.btnPrintSchedule.Location = new System.Drawing.Point(899, 4);
+            this.btnPrintSchedule.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnPrintSchedule.Name = "btnPrintSchedule";
+            this.btnPrintSchedule.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.btnPrintSchedule.Size = new System.Drawing.Size(247, 48);
+            this.btnPrintSchedule.TabIndex = 73;
+            this.btnPrintSchedule.Text = "  Print Schedule";
+            this.btnPrintSchedule.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPrintSchedule.UseVisualStyleBackColor = false;
+            this.btnPrintSchedule.Click += new System.EventHandler(this.btnPrintSchedule_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.FlatAppearance.BorderSize = 0;
+            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
+            this.btnRefresh.Location = new System.Drawing.Point(1176, 4);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(54, 48);
+            this.btnRefresh.TabIndex = 13;
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnPrintStmt
+            // 
+            this.btnPrintStmt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPrintStmt.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.btnPrintStmt.FlatAppearance.BorderSize = 0;
+            this.btnPrintStmt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrintStmt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrintStmt.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnPrintStmt.Image = ((System.Drawing.Image)(resources.GetObject("btnPrintStmt.Image")));
+            this.btnPrintStmt.Location = new System.Drawing.Point(919, 4);
+            this.btnPrintStmt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnPrintStmt.Name = "btnPrintStmt";
+            this.btnPrintStmt.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.btnPrintStmt.Size = new System.Drawing.Size(247, 48);
+            this.btnPrintStmt.TabIndex = 73;
+            this.btnPrintStmt.Text = "  Print Statement";
+            this.btnPrintStmt.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPrintStmt.UseVisualStyleBackColor = false;
+            this.btnPrintStmt.Click += new System.EventHandler(this.btnPrintStmt_Click_1);
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
+            this.button2.Location = new System.Drawing.Point(1196, 4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(54, 48);
+            this.button2.TabIndex = 13;
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // FormUserDetails
             // 
@@ -1129,7 +1161,6 @@ namespace XpressLoan.Forms
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panelTopRw.ResumeLayout(false);
             this.panelTopRw.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbProfile)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblCustomersBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xpressLoanDBDataSet)).EndInit();
             this.metroPanel1.ResumeLayout(false);
@@ -1152,6 +1183,7 @@ namespace XpressLoan.Forms
             ((System.ComponentModel.ISupportInitialize)(this.tblRepaymentBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblUsersBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblRepaymentBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbProfile)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1228,5 +1260,7 @@ namespace XpressLoan.Forms
         private ComboBox cbxTransLoans;
         private System.Drawing.Printing.PrintDocument printDocument2;
         private CheckBox ckbxEnableStatus;
+        private Button btnDeleteCus;
+        private Button btnRestructure;
     }
 }

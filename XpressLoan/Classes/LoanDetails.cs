@@ -37,9 +37,9 @@ namespace XpressLoan.Classes
         public double interest { get; set; } = 0;
         public LoanDetails(int loanid) 
         {
-            getLoanDetails(loanid);
+            processLoanDetails(loanid);
         }
-        public void getLoanDetails(int mloanID)
+        public void processLoanDetails(int mloanID)
         {
             int repID = 0;
             using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
@@ -89,6 +89,52 @@ namespace XpressLoan.Classes
                     formMessage.ShowDialog();
                 }
             }
+        }
+        public double getTotalRepaymentsMadeForThisLoan(int loanID)
+        {//paid amount
+            double paidAmount = 0;
+            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                string query = "SELECT * FROM tblRepayment WHERE LoanID=@LoanID";
+                da.SelectCommand = new SqlCommand(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@LoanID", loanID);
+                SqlDataReader dr;
+                try
+                {
+                    dr = da.SelectCommand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        paidAmount += Convert.ToDouble(dr["Paid"]);
+                    }
+                    dr.Close();
+                    conn.Close();
+                }
+                catch (Exception exception)
+                {
+                }
+            }
+            return paidAmount;
+        }
+        public double principalPaid()
+        {
+            double pPaid = 0;
+            pPaid = (100 - rate) * getTotalRepaymentsMadeForThisLoan(loanID);
+            return pPaid;
+        }
+        public double principalLeft()
+        {
+            double pBalance = 0;
+            pBalance = amount - principalPaid();
+            return pBalance;
+        }
+        public double balance()
+        {
+            double bal = 0;
+            bal = (amount + interest) - getTotalRepaymentsMadeForThisLoan(loanID);
+            return bal;
         }
 
     }

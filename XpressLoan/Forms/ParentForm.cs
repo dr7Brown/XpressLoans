@@ -289,6 +289,26 @@ namespace XpressLoan
             formCalculator.ShowDialog(this);
            
         }
+        //All updates made to Database
+        private void updateDataBaseStructure()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnString.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    var query = "If not exists (select name from sysobjects where name = 'tblUpdates') CREATE TABLE tblUpdates(ID int,Type Varchar(50),Status int),Date datetime)";
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    command.ExecuteNonQuery();
+                    conn.Close();
+                }
+                catch (Exception eq)
+                {
+                    
+                }
+            }
+        }
     }
 
     

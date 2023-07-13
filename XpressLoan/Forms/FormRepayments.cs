@@ -363,6 +363,7 @@ namespace XpressLoan.Forms
                 int loanId = Convert.ToInt32(tblRepaymentDataGridView.Rows[e.RowIndex].Cells[4].Value.ToString());
                 FormUserDetails fu = new FormUserDetails(Convert.ToInt32(cusID), loanId);
                 fu.ShowDialog(this);
+                initializeFields();
             }
         }
     }

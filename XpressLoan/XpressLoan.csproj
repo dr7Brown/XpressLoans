@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <SuiteName>XpressLoans</SuiteName>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>11</ApplicationRevision>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>2.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -118,6 +118,7 @@
     <Compile Include="Classes\ConnString.cs" />
     <Compile Include="Classes\CurrentDate.cs" />
     <Compile Include="Classes\Customers.cs" />
+    <Compile Include="Classes\Repayment.cs" />
     <Compile Include="Classes\RepaymentStatement.cs" />
     <Compile Include="Classes\ScheduleDetails.cs" />
     <Compile Include="Classes\TransactionData.cs" />
@@ -132,6 +133,12 @@
     </Compile>
     <Compile Include="Forms\FormAuth.Designer.cs">
       <DependentUpon>FormAuth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormDeleteCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormDeleteCustomer.Designer.cs">
+      <DependentUpon>FormDeleteCustomer.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormReceipt.cs">
       <SubType>Form</SubType>
@@ -204,6 +211,12 @@
     </Compile>
     <Compile Include="Forms\FormReports.Designer.cs">
       <DependentUpon>FormReports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormRestructureLoan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormRestructureLoan.Designer.cs">
+      <DependentUpon>FormRestructureLoan.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormSettings.cs">
       <SubType>Form</SubType>
@@ -281,6 +294,9 @@
     <EmbeddedResource Include="Forms\FormAuth.resx">
       <DependentUpon>FormAuth.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormDeleteCustomer.resx">
+      <DependentUpon>FormDeleteCustomer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormReceipt.resx">
       <DependentUpon>FormReceipt.cs</DependentUpon>
     </EmbeddedResource>
@@ -316,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormReports.resx">
       <DependentUpon>FormReports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormRestructureLoan.resx">
+      <DependentUpon>FormRestructureLoan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>

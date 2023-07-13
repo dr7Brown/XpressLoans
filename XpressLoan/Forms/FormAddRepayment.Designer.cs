@@ -35,7 +35,9 @@
             System.Windows.Forms.Label statusLabel;
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label8;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAddRepayment));
             this.panelCol2 = new System.Windows.Forms.Panel();
+            this.dgRepayments = new System.Windows.Forms.DataGridView();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.txtError = new System.Windows.Forms.TextBox();
@@ -63,6 +65,7 @@
             label2 = new System.Windows.Forms.Label();
             label8 = new System.Windows.Forms.Label();
             this.panelCol2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRepayments)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -71,7 +74,7 @@
             // 
             repaymentIDLabel.AutoSize = true;
             repaymentIDLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            repaymentIDLabel.Location = new System.Drawing.Point(34, 140);
+            repaymentIDLabel.Location = new System.Drawing.Point(19, 170);
             repaymentIDLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             repaymentIDLabel.Name = "repaymentIDLabel";
             repaymentIDLabel.Size = new System.Drawing.Size(40, 25);
@@ -82,7 +85,7 @@
             // 
             loanIDLabel.AutoSize = true;
             loanIDLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            loanIDLabel.Location = new System.Drawing.Point(34, 242);
+            loanIDLabel.Location = new System.Drawing.Point(22, 266);
             loanIDLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             loanIDLabel.Name = "loanIDLabel";
             loanIDLabel.Size = new System.Drawing.Size(94, 25);
@@ -93,7 +96,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            label1.Location = new System.Drawing.Point(34, 295);
+            label1.Location = new System.Drawing.Point(22, 315);
             label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(64, 25);
@@ -104,7 +107,7 @@
             // 
             amountLabel.AutoSize = true;
             amountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            amountLabel.Location = new System.Drawing.Point(32, 352);
+            amountLabel.Location = new System.Drawing.Point(20, 366);
             amountLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             amountLabel.Name = "amountLabel";
             amountLabel.Size = new System.Drawing.Size(90, 25);
@@ -115,7 +118,7 @@
             // 
             statusLabel.AutoSize = true;
             statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            statusLabel.Location = new System.Drawing.Point(27, 488);
+            statusLabel.Location = new System.Drawing.Point(488, 346);
             statusLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             statusLabel.Name = "statusLabel";
             statusLabel.Size = new System.Drawing.Size(122, 25);
@@ -126,7 +129,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            label2.Location = new System.Drawing.Point(34, 191);
+            label2.Location = new System.Drawing.Point(19, 219);
             label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(68, 25);
@@ -137,7 +140,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            label8.Location = new System.Drawing.Point(30, 409);
+            label8.Location = new System.Drawing.Point(18, 416);
             label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(120, 25);
@@ -147,6 +150,7 @@
             // panelCol2
             // 
             this.panelCol2.AutoScroll = true;
+            this.panelCol2.Controls.Add(this.dgRepayments);
             this.panelCol2.Controls.Add(this.txtAmount);
             this.panelCol2.Controls.Add(this.progressBar1);
             this.panelCol2.Controls.Add(this.txtError);
@@ -170,13 +174,30 @@
             this.panelCol2.Location = new System.Drawing.Point(20, 60);
             this.panelCol2.Margin = new System.Windows.Forms.Padding(4);
             this.panelCol2.Name = "panelCol2";
-            this.panelCol2.Size = new System.Drawing.Size(651, 652);
+            this.panelCol2.Size = new System.Drawing.Size(861, 685);
             this.panelCol2.TabIndex = 1;
+            // 
+            // dgRepayments
+            // 
+            this.dgRepayments.AllowUserToAddRows = false;
+            this.dgRepayments.AllowUserToDeleteRows = false;
+            this.dgRepayments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgRepayments.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.dgRepayments.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.dgRepayments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgRepayments.Location = new System.Drawing.Point(422, 145);
+            this.dgRepayments.Name = "dgRepayments";
+            this.dgRepayments.RowHeadersWidth = 51;
+            this.dgRepayments.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dgRepayments.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgRepayments.RowTemplate.Height = 24;
+            this.dgRepayments.Size = new System.Drawing.Size(426, 175);
+            this.dgRepayments.TabIndex = 47;
             // 
             // txtAmount
             // 
             this.txtAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAmount.Location = new System.Drawing.Point(179, 403);
+            this.txtAmount.Location = new System.Drawing.Point(143, 413);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(252, 30);
             this.txtAmount.TabIndex = 46;
@@ -186,9 +207,9 @@
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.progressBar1.Location = new System.Drawing.Point(0, 126);
+            this.progressBar1.Location = new System.Drawing.Point(-18, 126);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(651, 13);
+            this.progressBar1.Size = new System.Drawing.Size(887, 11);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar1.TabIndex = 43;
             this.progressBar1.Visible = false;
@@ -199,12 +220,12 @@
             this.txtError.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtError.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtError.ForeColor = System.Drawing.Color.Red;
-            this.txtError.Location = new System.Drawing.Point(180, 439);
+            this.txtError.Location = new System.Drawing.Point(167, 447);
             this.txtError.Margin = new System.Windows.Forms.Padding(4);
             this.txtError.MaxLength = 20;
             this.txtError.Name = "txtError";
             this.txtError.ReadOnly = true;
-            this.txtError.Size = new System.Drawing.Size(392, 20);
+            this.txtError.Size = new System.Drawing.Size(310, 20);
             this.txtError.TabIndex = 42;
             this.txtError.Visible = false;
             // 
@@ -214,7 +235,7 @@
             this.txtPurposeTextCount.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtPurposeTextCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPurposeTextCount.ForeColor = System.Drawing.Color.Red;
-            this.txtPurposeTextCount.Location = new System.Drawing.Point(493, 522);
+            this.txtPurposeTextCount.Location = new System.Drawing.Point(751, 413);
             this.txtPurposeTextCount.Margin = new System.Windows.Forms.Padding(4);
             this.txtPurposeTextCount.MaxLength = 20;
             this.txtPurposeTextCount.Name = "txtPurposeTextCount";
@@ -229,10 +250,10 @@
             this.commentsTextBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.commentsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.commentsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.commentsTextBox.Location = new System.Drawing.Point(168, 468);
+            this.commentsTextBox.Location = new System.Drawing.Point(484, 376);
             this.commentsTextBox.MaxLength = 20;
             this.commentsTextBox.Name = "commentsTextBox";
-            this.commentsTextBox.Size = new System.Drawing.Size(409, 83);
+            this.commentsTextBox.Size = new System.Drawing.Size(357, 69);
             this.commentsTextBox.TabIndex = 27;
             this.commentsTextBox.Text = "";
             this.commentsTextBox.TextChanged += new System.EventHandler(this.commentsTextBox_TextChanged);
@@ -241,9 +262,9 @@
             // 
             this.btnSubmit.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.btnSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmit.Location = new System.Drawing.Point(493, 570);
+            this.btnSubmit.Location = new System.Drawing.Point(587, 485);
             this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(125, 69);
+            this.btnSubmit.Size = new System.Drawing.Size(196, 161);
             this.btnSubmit.TabIndex = 26;
             this.btnSubmit.Text = "Submit";
             this.btnSubmit.UseVisualStyleBackColor = false;
@@ -262,12 +283,12 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(651, 130);
+            this.panel1.Size = new System.Drawing.Size(861, 130);
             this.panel1.TabIndex = 25;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::XpressLoan.Properties.Resources.xpress_logo;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(8, 7);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(183, 113);
@@ -338,37 +359,35 @@
             // nameTextBox1
             // 
             this.nameTextBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.nameTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nameTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameTextBox1.Location = new System.Drawing.Point(155, 186);
+            this.nameTextBox1.Location = new System.Drawing.Point(95, 219);
             this.nameTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.nameTextBox1.Name = "nameTextBox1";
             this.nameTextBox1.ReadOnly = true;
-            this.nameTextBox1.Size = new System.Drawing.Size(445, 23);
+            this.nameTextBox1.Size = new System.Drawing.Size(300, 30);
             this.nameTextBox1.TabIndex = 15;
             // 
             // repaymentIDTextBox
             // 
             this.repaymentIDTextBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.repaymentIDTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.repaymentIDTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.repaymentIDTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.repaymentIDTextBox.Location = new System.Drawing.Point(155, 137);
+            this.repaymentIDTextBox.Location = new System.Drawing.Point(95, 170);
             this.repaymentIDTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.repaymentIDTextBox.Name = "repaymentIDTextBox";
             this.repaymentIDTextBox.ReadOnly = true;
-            this.repaymentIDTextBox.Size = new System.Drawing.Size(288, 23);
+            this.repaymentIDTextBox.Size = new System.Drawing.Size(162, 30);
             this.repaymentIDTextBox.TabIndex = 15;
             // 
             // loanIDTextBox
             // 
             this.loanIDTextBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.loanIDTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.loanIDTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loanIDTextBox.Location = new System.Drawing.Point(155, 239);
+            this.loanIDTextBox.Location = new System.Drawing.Point(144, 261);
             this.loanIDTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.loanIDTextBox.Name = "loanIDTextBox";
             this.loanIDTextBox.ReadOnly = true;
-            this.loanIDTextBox.Size = new System.Drawing.Size(288, 23);
+            this.loanIDTextBox.Size = new System.Drawing.Size(214, 30);
             this.loanIDTextBox.TabIndex = 17;
             // 
             // datePaidDatePicker
@@ -376,7 +395,7 @@
             this.datePaidDatePicker.CustomFormat = "yyyy-MM-dd";
             this.datePaidDatePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.datePaidDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.datePaidDatePicker.Location = new System.Drawing.Point(180, 290);
+            this.datePaidDatePicker.Location = new System.Drawing.Point(142, 310);
             this.datePaidDatePicker.Margin = new System.Windows.Forms.Padding(4);
             this.datePaidDatePicker.Name = "datePaidDatePicker";
             this.datePaidDatePicker.Size = new System.Drawing.Size(252, 30);
@@ -386,7 +405,7 @@
             // txtBalance
             // 
             this.txtBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBalance.Location = new System.Drawing.Point(179, 347);
+            this.txtBalance.Location = new System.Drawing.Point(143, 361);
             this.txtBalance.Margin = new System.Windows.Forms.Padding(100, 4, 4, 4);
             this.txtBalance.Name = "txtBalance";
             this.txtBalance.ReadOnly = true;
@@ -398,15 +417,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(691, 732);
+            this.ClientSize = new System.Drawing.Size(901, 765);
             this.Controls.Add(this.panelCol2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormAddRepayment";
+            this.Resizable = false;
             this.ShowInTaskbar = false;
             this.Text = "Add Repayment Form";
             this.panelCol2.ResumeLayout(false);
             this.panelCol2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgRepayments)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -436,5 +457,6 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TextBox txtError;
         private System.Windows.Forms.TextBox txtAmount;
+        private System.Windows.Forms.DataGridView dgRepayments;
     }
 }

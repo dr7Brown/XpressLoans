@@ -86,3 +86,5 @@ C:\Users\Brownzip\source\repos\XpressLoan\XpressLoan\obj\Debug\XpressLoan.applic
 C:\Users\Brownzip\source\repos\XpressLoan\XpressLoan\obj\Debug\XpressLoan.csproj.CopyComplete
 C:\Users\Brownzip\source\repos\XpressLoan\XpressLoan\obj\Debug\XpressLoan.exe
 C:\Users\Brownzip\source\repos\XpressLoan\XpressLoan\obj\Debug\XpressLoan.pdb
+C:\Users\Brownzip\source\repos\XpressLoan\XpressLoan\obj\Debug\XpressLoan.Forms.FormDeleteCustomer.resources
+C:\Users\Brownzip\source\repos\XpressLoan\XpressLoan\obj\Debug\XpressLoan.Forms.FormRestructureLoan.resources

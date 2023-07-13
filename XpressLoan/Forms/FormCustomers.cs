@@ -89,7 +89,9 @@ namespace XpressLoan.Forms
                     String cusID = tblCustomersDataGridView.Rows[e.RowIndex].Cells[1].Value.ToString();
                     FormUserDetails fu = new FormUserDetails(Convert.ToInt32(cusID));
                     fu.ShowDialog(this);
-                }catch(Exception d){ }
+                    fillDG();
+                }
+                catch(Exception d){ }
                 
             }
         }
@@ -125,13 +127,15 @@ namespace XpressLoan.Forms
                     Convert.ToInt64(mAccountNumber); 
                     da.SelectCommand = new SqlCommand("SELECT * FROM tblCustomers " +
                     "WHERE CustomerID LIKE " +
-                    "(SELECT CustomerID FROM tblAccount WHERE AccNumber LIKE @accNumber)", conn);
+                    "(SELECT CustomerID FROM tblAccount WHERE AccNumber LIKE @accNumber)" +
+                    "ORDER BY CustomerID DESC", conn);
                     da.SelectCommand.Parameters.AddWithValue("@accNumber", mAccountNumber);
                 }
                 catch(Exception e)
                 {//if name was entered
                     da.SelectCommand = new SqlCommand("SELECT * FROM tblCustomers " +
-                    "WHERE Name LIKE @name ", conn);
+                    "WHERE Name LIKE @name " +
+                    "ORDER BY CustomerID DESC", conn);
                     da.SelectCommand.Parameters.AddWithValue("@name", "%" + mAccountNumber + "%");
                     //da.SelectCommand.Parameters.AddWithValue("@name2", "%" +mAccountNumber + "%");
 
